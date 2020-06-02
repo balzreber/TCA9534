@@ -16,6 +16,7 @@ class TCA9534
     int Begin(void);
     int PinMode(int Pin, boolean PinType);
     int DigitalWrite(int Pin, boolean State);
+    int DigitalRead(int Pin);
 
   private:
     int ADR;
