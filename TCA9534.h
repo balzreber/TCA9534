@@ -5,11 +5,6 @@
 
 class TCA9534
 {
-    //     enum IO_Type
-    // {
-    //     INPUT,
-    //     OUTPUT
-    // };
 
   public:
     TCA9534(int _ADR);
@@ -20,14 +15,12 @@ class TCA9534
 
   private:
     int ADR;
-  	uint8_t PinModeConf = 0xFF; //All pins natively inputs
-    uint8_t Port = 0x00; //All pins natively off
-    uint8_t PinPolarityConfig = 0x00; //All pins natively non-inverted
+  	uint8_t PinModeConf;
+    uint8_t Port;
+    uint8_t PinPolarityConfig;
 
     int SetPort(int Config);
     int SetDirection(int Config);
-    int SetPolarity(int Config);
-    int ReadPort(int Config); //IN DEVELOPMENT
 };
 
 #endif
