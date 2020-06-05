@@ -77,11 +77,14 @@ int TCA9534::DigitalRead(int Pin)
   {
     return -1; //Fail if pin out of range
   }
+
   Wire.beginTransmission(ADR);
   Wire.write(0x00);
   Wire.endTransmission();
   Wire.requestFrom(ADR, Pin);
-  return Wire.read();
+  Wire.requestFrom(ADR, 1);
+  int inRegister =  Wire.read();
+  return (( -inRegister >> Pin) & 0x01 );
 }
 
 int TCA9534::SetPort(int Config) {
