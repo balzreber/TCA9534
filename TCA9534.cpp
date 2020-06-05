@@ -37,7 +37,7 @@ int TCA9534::PinMode(int Pin, boolean PinType) {
     return 0;
   }
 
-  // Returns -1 if pin type was not or wrongly specified
+  // Returns -1 (fail) if pin type was not or wrongly specified
   else return -1;
 
 }
@@ -51,49 +51,55 @@ int TCA9534::DigitalWrite(int Pin, boolean State)
     return -1;
   }
 
-  if(State == HIGH)
-  {
+  // If state is HIGH write according shifted port via SetPort()
+  if(State == HIGH) {
     Port = Port | (0x01 << Pin);
     SetPort(Port);
     return 1;
   }
-  else if(State == LOW)
-  {
+
+  // If state is LOW write according shifted port via SetPort()
+  else if(State == LOW) {
     Port = Port & ~(0x01 << Pin);
     SetPort(Port);
     return 0;
   }
-  else
-    return -1; //Fail if state is ill-defined
+
+  // Returns -1 (fail) if pin type was not or wrongly specified
+  else return -1;
+
 }
 
+// Read state from specified pin
 int TCA9534::DigitalRead(int Pin)
 {
-  if(Pin > 8 || Pin < 0)
-  {
-    return -1; //Fail if pin out of range
+
+  // Check if specified pin is in range of avalable pins
+  if(Pin > 8 || Pin < 0) {
+    return -1;
   }
 
+  // Initiate transmission, set input port and the read from register
   Wire.beginTransmission(ADR);
-  Wire.write(0x00);
+  Wire.write(0x00); // 0x00 = Input Port
   Wire.endTransmission();
-  Wire.requestFrom(ADR, Pin);
   Wire.requestFrom(ADR, 1);
   int inRegister =  Wire.read();
   return (( -inRegister >> Pin) & 0x01 );
 }
 
+// Set port via output register (0x01)
 int TCA9534::SetPort(int Config) {
-  Wire.beginTransmission(ADR); // transmit to device with address ADR
-  Wire.write(0x01);   //Send to output set register
+  Wire.beginTransmission(ADR);
+  Wire.write(0x01); // 0x01 = Output Port
   Wire.write(Config);
   return Wire.endTransmission();
 }
 
-
+// Set direction via configuration register (0x03)
 int TCA9534::SetDirection(int Config) {
-  Wire.beginTransmission(ADR); // transmit to device with address ADR
-  Wire.write(0x03);        //Send to port configuration register
+  Wire.beginTransmission(ADR);
+  Wire.write(0x03); // 0x03 = Configuration
   Wire.write(Config);
-  return Wire.endTransmission();    // stop transmitting
+  return Wire.endTransmission();
 }
