@@ -18,7 +18,7 @@ int TCA9534::Begin(void) {
 int TCA9534::PinMode(int Pin, boolean PinType) {
 
   // Check if specified pin is in range of avalable pins
-  if(Pin > 8 || Pin < 0) {
+  if(Pin > 7 || Pin < 0) {
     return -1;
   }
 
@@ -47,7 +47,7 @@ int TCA9534::DigitalWrite(int Pin, boolean State)
 {
 
   // Check if specified pin is in range of avalable pins
-  if(Pin > 8 || Pin < 0) {
+  if(Pin > 7 || Pin < 0) {
     return -1;
   }
 
@@ -75,7 +75,7 @@ int TCA9534::DigitalRead(int Pin)
 {
 
   // Check if specified pin is in range of avalable pins
-  if(Pin > 8 || Pin < 0) {
+  if(Pin > 7 || Pin < 0) {
     return -1;
   }
 
