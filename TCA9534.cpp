@@ -79,13 +79,18 @@ int TCA9534::DigitalRead(int Pin)
     return -1;
   }
 
+  uint8_t inRegister =  ReadAll();
+  return (( -inRegister >> Pin) & 0x01 );
+}
+
+// Read state of the whole input port register
+uint8_t TCA9534::ReadAll() {
   // Initiate transmission, set input port and the read from register
   Wire.beginTransmission(ADR);
   Wire.write(0x00); // 0x00 = Input Port
   Wire.endTransmission();
   Wire.requestFrom(ADR, 1);
-  int inRegister =  Wire.read();
-  return (( -inRegister >> Pin) & 0x01 );
+  return Wire.read();
 }
 
 // Set port via output register (0x01)
